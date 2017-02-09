@@ -11,8 +11,6 @@ import org.codehaus.plexus.component.configurator.converters.special.ClassRealmC
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -26,8 +24,6 @@ import java.util.List;
  */
 @Component(role=ComponentConfigurator.class, hint="include-project-dependencies")
 public class IncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
-
-    private static final Logger LOGGER = new ConsoleLogger(Logger.LEVEL_DEBUG, "Configurator");
 
     public void configureComponent( Object component, PlexusConfiguration configuration,
                                     ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
@@ -67,9 +63,6 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
             try {
                 final URL url = new File(element).toURI().toURL();
                 urls.add(url);
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Added to project class loader: " + url);
-                }
             } catch (MalformedURLException e) {
                 throw new ComponentConfigurationException("Unable to access project dependency: " + element, e);
             }
