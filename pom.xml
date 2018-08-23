@@ -4,13 +4,20 @@
   <groupId>com.savi.maven.plugins</groupId>
   <artifactId>kie-serializer-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.2-SNAPSHOT</version>
   <name>kie-serializer-plugin Maven Mojo</name>
   <url>http://maven.apache.org</url>
   <properties>
     <drools.version>6.3.0.Final</drools.version>
   </properties>
 
+  <repositories>
+    <!-- For artifactory-maven-plugin: -->
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+    </repository>
+  </repositories>
   <build>
     <plugins>
       <plugin>
@@ -22,6 +29,60 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>
+        <!-- For building source Jar: -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+         </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- For building JavaDocs Jar: -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- For making versioned releases: -->
+        <groupId>org.jfrog.buildinfo</groupId>
+        <artifactId>artifactory-maven-plugin</artifactId>
+        <version>2.6.1</version>
+        <inherited>false</inherited>
+        <executions>
+          <execution>
+            <id>build-info</id>
+            <goals>
+              <goal>publish</goal>
+            </goals>
+            <configuration>
+              <publisher>
+                <contextUrl>
+                  https://artifactory.savi.io/artifactory
+                </contextUrl>
+                <username>{{username}}</username>
+                <password>{{password}}</password>
+                <repoKey>{{repository}}</repoKey>
+              </publisher>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-maven-plugin</artifactId>
